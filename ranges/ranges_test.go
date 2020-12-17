@@ -10,7 +10,7 @@ import (
 
 func TestRanges(t *testing.T) {
 	t.Parallel()
-	doc, err := os.Open("../test/ip-ranges.json")
+	doc, err := os.Open("../testdata/cloud.json")
 	require.NoError(t, err)
 
 	ranges, err := New(doc)
@@ -18,24 +18,35 @@ func TestRanges(t *testing.T) {
 
 	t.Run("has IPv4 prefixes", func(t *testing.T) {
 		t.Parallel()
-		require.NotZero(t, ranges.PrefixesIPv4, "should have 1 or more prefixes")
+		var count int64
+		for _, p := range ranges.Prefixes {
+			if p.IPV4Prefix != "" {
+				count++
+			}
+		}
+		require.NotZero(t, count, "should have 1 or more prefixes")
 	})
 
 	t.Run("has IPv6 prefixes", func(t *testing.T) {
 		t.Parallel()
-		require.NotZero(t, ranges.PrefixesIPv6, "should have 1 or more prefixes")
+		var count int64
+		for _, p := range ranges.Prefixes {
+			if p.IPV6Prefix != "" {
+				count++
+			}
+		}
+		require.NotEmpty(t, count, "should have 1 or more prefixes")
 	})
 
 	t.Run("returns a Prefix struct for an IPv4 address", func(t *testing.T) {
 		t.Parallel()
-		prefix := PrefixIPv4{
-			IPPrefix:           "52.94.76.0/22",
-			Region:             "us-west-2",
-			Service:            "AMAZON",
-			NetworkBorderGroup: "us-west-2",
+		prefix := Prefix{
+			IPV4Prefix: "34.80.0.0/15",
+			Service:    "Google Cloud",
+			Scope:      "asia-east1",
 		}
 
-		ip := net.ParseIP("52.94.76.5")
+		ip := net.ParseIP("34.80.0.1")
 		results, err := ranges.LookupIPv4(ip)
 		require.NoError(t, err)
 		require.Equal(t, prefix, results[0])
@@ -51,14 +62,13 @@ func TestRanges(t *testing.T) {
 
 	t.Run("returns a Prefix struct for an IPv6 address", func(t *testing.T) {
 		t.Parallel()
-		prefix := PrefixIPv6{
-			IPPrefix:           "2a05:d07a:a000::/40",
-			Region:             "eu-south-1",
-			Service:            "AMAZON",
-			NetworkBorderGroup: "eu-south-1",
+		prefix := Prefix{
+			IPV6Prefix: "2600:1901::/48",
+			Service:    "Google Cloud",
+			Scope:      "global",
 		}
 
-		ip := net.ParseIP("2a05:d07a:a0ff:ffff:ffff:ffff:ffff:aaaa")
+		ip := net.ParseIP("2600:1901:0:ffff:ffff:ffff:ffff:aaaa")
 		results, err := ranges.LookupIPv6(ip)
 		require.NoError(t, err)
 		require.Equal(t, prefix, results[0])

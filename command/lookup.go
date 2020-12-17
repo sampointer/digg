@@ -8,10 +8,29 @@ import (
 	"strings"
 )
 
-const url string = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-
 //Lookup returns Prefixes the ranges of which include the passed IP address
 func Lookup(q string) ([]ranges.Prefix, error) {
+	var r []ranges.Prefix
+
+	urls := []string{
+		"https://www.gstatic.com/ipranges/goog.json",
+		"https://www.gstatic.com/ipranges/cloud.json",
+	}
+
+	for _, url := range urls {
+		l, err := lookup(q, url)
+		if err != nil {
+			return r, err
+		}
+
+		r = append(r, l...)
+
+	}
+
+	return r, nil
+}
+
+func lookup(q string, url string) ([]ranges.Prefix, error) {
 	var client http.Client
 	var prefixes []ranges.Prefix
 

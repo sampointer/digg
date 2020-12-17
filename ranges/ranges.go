@@ -2,7 +2,6 @@ package ranges
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
@@ -10,14 +9,14 @@ import (
 	"time"
 )
 
-// Ranges represents an https://ip-ranges.amazonaws.com/ip-ranges.json document
+// Ranges represents an https://www.gstatic.com/ipranges/cloud.json or
+// https://www.gstatic.com/ipranges/goog.json document
 type Ranges struct {
-	CreateDate    time.Time    `json:"-"`
-	CreateDateRaw string       `json:"createDate"`
-	PrefixesIPv4  []PrefixIPv4 `json:"prefixes"`
-	PrefixesIPv6  []PrefixIPv6 `json:"ipv6_prefixes"`
-	SyncToken     time.Time    `json:"-"`
-	SyncTokenRaw  string       `json:"syncToken"`
+	CreationTime    time.Time `json:"-"`
+	CreationTimeRaw string    `json:"creationTime"`
+	Prefixes        []Prefix  `json:"prefixes"`
+	SyncToken       time.Time `json:"-"`
+	SyncTokenRaw    string    `json:"syncToken"`
 }
 
 // LookupIPv4 returns the Prefix structs that contain a range that includes the
@@ -25,14 +24,16 @@ type Ranges struct {
 func (r *Ranges) LookupIPv4(ip net.IP) ([]Prefix, error) {
 	var results []Prefix
 
-	for _, p := range r.PrefixesIPv4 {
-		_, pIPNet, err := net.ParseCIDR(p.IPPrefix)
-		if err != nil {
-			return nil, err
-		}
+	for _, p := range r.Prefixes {
+		if p.IPV4Prefix != "" {
+			_, pIPNet, err := net.ParseCIDR(p.IPV4Prefix)
+			if err != nil {
+				return nil, err
+			}
 
-		if pIPNet.Contains(ip) {
-			results = append(results, p)
+			if pIPNet.Contains(ip) {
+				results = append(results, p)
+			}
 		}
 	}
 
@@ -44,14 +45,16 @@ func (r *Ranges) LookupIPv4(ip net.IP) ([]Prefix, error) {
 func (r *Ranges) LookupIPv6(ip net.IP) ([]Prefix, error) {
 	var results []Prefix
 
-	for _, p := range r.PrefixesIPv6 {
-		_, pIPNet, err := net.ParseCIDR(p.IPPrefix)
-		if err != nil {
-			return nil, err
-		}
+	for _, p := range r.Prefixes {
+		if p.IPV6Prefix != "" {
+			_, pIPNet, err := net.ParseCIDR(p.IPV6Prefix)
+			if err != nil {
+				return nil, err
+			}
 
-		if pIPNet.Contains(ip) {
-			results = append(results, p)
+			if pIPNet.Contains(ip) {
+				results = append(results, p)
+			}
 		}
 	}
 
@@ -72,31 +75,29 @@ func New(r io.Reader) (*Ranges, error) {
 		return nil, err
 	}
 
-	d, err := parseCreateDate(&ranges.CreateDateRaw)
+	d, err := parseCreationTime(&ranges.CreationTimeRaw)
 	if err != nil {
 		return nil, err
 	}
-	ranges.CreateDate = d
+	ranges.CreationTime = d
 
-	s, err := strconv.ParseInt(ranges.SyncTokenRaw, 10, 64)
+	s, err := strconv.ParseInt(ranges.SyncTokenRaw[0:10], 10, 64)
 	if err != nil {
 		return nil, err
 	}
-	ranges.SyncToken = time.Unix(s, 0).UTC()
 
-	if ranges.CreateDate != ranges.SyncToken {
-		return nil, fmt.Errorf(
-			"syncToken and createDate do not match: %s, %s",
-			ranges.SyncToken,
-			ranges.CreateDate,
-		)
+	m, err := strconv.ParseInt(ranges.SyncTokenRaw[10:13], 10, 64)
+	if err != nil {
+		return nil, err
 	}
+
+	ranges.SyncToken = time.Unix(s, m*1000000).UTC()
 
 	return &ranges, nil
 }
 
-func parseCreateDate(s *string) (time.Time, error) {
-	const createDateFormat = "2006-01-02-15-04-05"
-	t, err := time.Parse(createDateFormat, *s)
+func parseCreationTime(s *string) (time.Time, error) {
+	const creationTimeFormat = "2006-01-02T15:04:05.000"
+	t, err := time.Parse(creationTimeFormat, *s)
 	return t, err
 }

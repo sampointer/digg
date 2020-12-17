@@ -33,8 +33,8 @@ var format string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "digg ipv4_address|ipv6_address ...",
-	Short: "look up AWS IP address details",
-	Long: `Intelligently parses the current AWS ip-ranges.json to enable you to
+	Short: "look up Google IP address details",
+	Long: `Intelligently parses the current Google ip-ranges.json to enable you to
 look up details of any specific IP address.
 
 See https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html for more

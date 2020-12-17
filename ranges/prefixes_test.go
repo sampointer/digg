@@ -6,18 +6,23 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var prefixIPv4 = PrefixIPv4{
-	IPPrefix:           "52.94.76.0/22",
-	Region:             "us-west-2",
-	Service:            "AMAZON",
-	NetworkBorderGroup: "us-west-2",
+var prefixIPv4 = Prefix{
+	IPV4Prefix: "34.80.0.0/15",
+	Scope:      "asia-east1",
+	Service:    "Google Cloud",
 }
 
-var prefixIPv6 = PrefixIPv6{
-	IPPrefix:           "2a05:d07a:a000::/40",
-	Region:             "eu-south-1",
-	Service:            "AMAZON",
-	NetworkBorderGroup: "eu-south-1",
+var prefixIPv6 = Prefix{
+	IPV6Prefix: "2600:1901::/48",
+	Scope:      "global",
+	Service:    "Google Cloud",
+}
+
+var prefixBoth = Prefix{
+	IPV4Prefix: "34.80.0.0/15",
+	IPV6Prefix: "2600:1901::/48",
+	Scope:      "global",
+	Service:    "Google Cloud",
 }
 
 func TestPrefixString(t *testing.T) {
@@ -26,7 +31,7 @@ func TestPrefixString(t *testing.T) {
 		t.Parallel()
 		require.Equal(
 			t,
-			"prefix: 52.94.76.0/22 region: us-west-2 service: AMAZON network_border_group: us-west-2",
+			"prefix: 34.80.0.0/15 scope: asia-east1 service: Google Cloud",
 			prefixIPv4.String(),
 		)
 	})
@@ -35,8 +40,17 @@ func TestPrefixString(t *testing.T) {
 		t.Parallel()
 		require.Equal(
 			t,
-			"prefix: 2a05:d07a:a000::/40 region: eu-south-1 service: AMAZON network_border_group: eu-south-1",
+			"prefix: 2600:1901::/48 scope: global service: Google Cloud",
 			prefixIPv6.String(),
+		)
+	})
+
+	t.Run("both", func(t *testing.T) {
+		t.Parallel()
+		require.Equal(
+			t,
+			"prefix: 34.80.0.0/15,2600:1901::/48 scope: global service: Google Cloud",
+			prefixBoth.String(),
 		)
 	})
 }
@@ -49,7 +63,7 @@ func TestPrefixJSON(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(
 			t,
-			`{"ip_prefix":"52.94.76.0/22","region":"us-west-2","service":"AMAZON","network_border_group":"us-west-2"}`,
+			`{"ipv4Prefix":"34.80.0.0/15","scope":"asia-east1","service":"Google Cloud"}`,
 			out,
 		)
 	})
@@ -60,7 +74,18 @@ func TestPrefixJSON(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(
 			t,
-			`{"ipv6_prefix":"2a05:d07a:a000::/40","region":"eu-south-1","service":"AMAZON","network_border_group":"eu-south-1"}`,
+			`{"ipv6Prefix":"2600:1901::/48","scope":"global","service":"Google Cloud"}`,
+			out,
+		)
+	})
+
+	t.Run("both", func(t *testing.T) {
+		t.Parallel()
+		out, err := prefixBoth.JSON()
+		require.NoError(t, err)
+		require.Equal(
+			t,
+			`{"ipv4Prefix":"34.80.0.0/15","ipv6Prefix":"2600:1901::/48","scope":"global","service":"Google Cloud"}`,
 			out,
 		)
 	})
