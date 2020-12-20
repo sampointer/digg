@@ -4,14 +4,14 @@ Look-up region and other information for any Google-owned IP address:
 
 ```bash
 $ digg $(dig king.com +short)
-prefix: 34.64.0.0/10 scope:  service:
+prefix: 34.64.0.0/10 scope: none service: none
 prefix: 34.120.0.0/16 scope: global service: Google Cloud
 ```
 
 ```bash
 $ digg 8.8.8.8 2a00:1450:4009:814::200e
-prefix: 8.8.8.0/24 scope:  service:
-prefix: 2a00:1450::/32 scope:  service:
+prefix: 8.8.8.0/24 scope: none  service: none
+prefix: 2a00:1450::/32 scope: none service: none
 ```
 
 ## Installation
