@@ -31,17 +31,17 @@ brews:
   -
     github:
       owner: sampointer
-      name: homebrew-digaws
+      name: homebrew-digg
 
     commit_author:
       name: goreleaserbot
       email: sam@outsidethe.net
 
     folder: Formula
-    homepage: "https://github.com/sampointer/digaws"
-    description: "Look up region and other information for any AWS IP address"
+    homepage: "https://github.com/sampointer/digg"
+    description: "Look up region and other information for any Google IP address"
     install : |
-      bin.install "digaws"
+      bin.install "digg"
 
 # Packages
 nfpms:
@@ -50,6 +50,6 @@ nfpms:
       - deb
       - rpm
     vendor: "Sam Pointer"
-    homepage: "https://github.com/sampointer/digaws"
+    homepage: "https://github.com/sampointer/digg"
     maintainer: "Sam Pointer <sam@outsidethe.net>"
-    description: "Look up region and other information for any AWS IP address"
+    description: "Look up region and other information for any Google IP address"
