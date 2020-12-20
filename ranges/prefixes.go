@@ -24,6 +24,14 @@ func (p Prefix) String() string {
 		prefix = concatPrefix(prefix, p.IPV6Prefix)
 	}
 
+	if p.Scope == "" {
+		p.Scope = "none"
+	}
+
+	if p.Service == "" {
+		p.Service = "none"
+	}
+
 	return fmt.Sprintf(
 		"prefix: %s scope: %s service: %s",
 		prefix,
