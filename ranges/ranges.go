@@ -97,7 +97,7 @@ func New(r io.Reader) (*Ranges, error) {
 }
 
 func parseCreationTime(s *string) (time.Time, error) {
-	const creationTimeFormat = "2006-01-02T15:04:05.000"
+	const creationTimeFormat = "2006-01-02T15:04:05.999"
 	t, err := time.Parse(creationTimeFormat, *s)
 	return t, err
 }
