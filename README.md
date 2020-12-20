@@ -26,8 +26,6 @@ brew install digg
 ### Packages
 Debian and RPM packages can be found on the [releases][1] page.
 
-[1]: https://github.com/sampointer/digg/releases/
-
 ### Docker
 
 ```bash
@@ -35,3 +33,15 @@ git clone https://github.com/sampointer/digg; cd digg
 docker build -t digg .
 docker run --rm -it digg $(dig king.com +short)
 ```
+
+## Similar tools
+
+| Company  | Tool        |
+|----------|-------------|
+| AWS      | [digaws][a] |
+| Google   | [digg][g]   |
+
+[1]: https://github.com/sampointer/digg/releases/
+
+[a]: https://github.com/sampointer/digaws
+[g]: https://github.com/sampointer/digg
