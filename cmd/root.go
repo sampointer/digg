@@ -34,11 +34,10 @@ var format string
 var rootCmd = &cobra.Command{
 	Use:   "digg ipv4_address|ipv6_address ...",
 	Short: "look up Google IP address details",
-	Long: `Intelligently parses the current Google ip-ranges.json to enable you to
-look up details of any specific IP address.
+	Long: `Intelligently parses the current Google public IP manifests to enable
+you to look up details of any specific IP address.
 
-See https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html for more
-information.`,
+See https://support.google.com/a/answer/10026322?hl=en for more information.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
