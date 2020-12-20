@@ -1,4 +1,4 @@
-# digg [![GoDoc](https://godoc.org/github.com/sampointer/digg?status.svg)](https://godoc.org/github.com/sampointer/digg) [![Go Report Card](https://goreportcard.com/badge/github.com/sampointer/digg)](https://goreportcard.com/report/github.com/sampointer/digg)
+# digg [![GoDoc](https://godoc.org/github.com/sampointer/digg?status.svg)](https://godoc.org/github.com/sampointer/digg) [![Go Report Card](https://goreportcard.com/badge/github.com/sampointer/digg)](https://goreportcard.com/report/github.com/sampointer/digg) ![goreleaser](https://github.com/sampointer/digg/workflows/goreleaser/badge.svg)
 
 Look-up region and other information for any Google-owned IP address:
 
