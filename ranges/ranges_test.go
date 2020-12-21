@@ -52,7 +52,7 @@ func TestRanges(t *testing.T) {
 		require.Equal(t, prefix, results[0])
 	})
 
-	t.Run("returns no Prefix struct for non-AWS IPv4 address", func(t *testing.T) {
+	t.Run("returns no Prefix struct for non-Google IPv4 address", func(t *testing.T) {
 		t.Parallel()
 		ip := net.ParseIP("1.2.3.4")
 		results, err := ranges.LookupIPv4(ip)
@@ -74,7 +74,7 @@ func TestRanges(t *testing.T) {
 		require.Equal(t, prefix, results[0])
 	})
 
-	t.Run("returns no Prefix struct for non-AWS IPv6 address", func(t *testing.T) {
+	t.Run("returns no Prefix struct for non-Google IPv6 address", func(t *testing.T) {
 		t.Parallel()
 		ip := net.ParseIP("1:2:3:4:5")
 		results, err := ranges.LookupIPv6(ip)
