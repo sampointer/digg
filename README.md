@@ -39,9 +39,11 @@ docker run --rm -it digg $(dig king.com +short)
 | Company  | Tool        |
 |----------|-------------|
 | AWS      | [digaws][a] |
+| Azure    | [digaz][z]  |
 | Google   | [digg][g]   |
 
 [1]: https://github.com/sampointer/digg/releases/
 
 [a]: https://github.com/sampointer/digaws
 [g]: https://github.com/sampointer/digg
+[z]: https://github.com/sampointer/digaz
