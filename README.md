@@ -14,6 +14,8 @@ prefix: 8.8.8.0/24 scope: none  service: none
 prefix: 2a00:1450::/32 scope: none service: none
 ```
 
+An online version of this tool can be found at [runson.cloud][r].
+
 ## Installation
 
 ### Homebrew
@@ -47,3 +49,4 @@ docker run --rm -it digg $(dig king.com +short)
 [a]: https://github.com/sampointer/digaws
 [g]: https://github.com/sampointer/digg
 [z]: https://github.com/sampointer/digaz
+[r]: https://runson.cloud
