@@ -3,6 +3,7 @@ package command
 import (
 	"testing"
 
+	"github.com/sampointer/digg/fetcher"
 	"github.com/sampointer/digg/ranges"
 	"github.com/stretchr/testify/require"
 )
@@ -18,7 +19,10 @@ func TestLookup(t *testing.T) {
 			IPV4Prefix: "8.8.8.0/24",
 		}
 
-		p, err := Lookup(ipv4)
+		docs, err := fetcher.Fetch()
+		require.NoError(t, err)
+
+		p, err := Lookup(ipv4, docs)
 		require.NoError(t, err)
 		require.Equal(t, 1, len(p))
 		require.Equal(t, prefix, p[0])
@@ -35,7 +39,10 @@ func TestLookup(t *testing.T) {
 			Service:    "Google Cloud",
 		}
 
-		p, err := Lookup(ipv6)
+		docs, err := fetcher.Fetch()
+		require.NoError(t, err)
+
+		p, err := Lookup(ipv6, docs)
 		require.NoError(t, err)
 		require.Equal(t, 2, len(p))
 		require.Equal(t, prefix0, p[0])

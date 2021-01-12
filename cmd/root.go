@@ -25,6 +25,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/sampointer/digg/command"
+	"github.com/sampointer/digg/manifest"
 )
 
 var cfgFile string
@@ -42,7 +43,7 @@ See https://support.google.com/a/answer/10026322?hl=en for more information.`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, arg := range args {
-			res, err := command.Lookup(arg)
+			res, err := command.Lookup(arg, manifest.GetManifest())
 			if err != nil {
 				fmt.Println(err)
 				return
