@@ -50,3 +50,4 @@ docker run --rm -it digg $(dig king.com +short)
 [g]: https://github.com/sampointer/digg
 [z]: https://github.com/sampointer/digaz
 [r]: https://runson.cloud
+
