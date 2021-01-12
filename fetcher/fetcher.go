@@ -18,8 +18,9 @@ func Fetch() ([]io.Reader, error) {
 	for _, u := range urls {
 		doc, err := client.Get(u)
 		if err != nil {
-			docs = append(docs, doc.Body)
+			return docs, err
 		}
+		docs = append(docs, doc.Body)
 	}
 
 	return docs, nil

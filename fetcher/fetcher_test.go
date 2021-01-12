@@ -11,6 +11,7 @@ import (
 func TestFetcher(t *testing.T) {
 	f, err := Fetch()
 	require.NoError(t, err)
+	require.Equal(t, 2, len(f))
 
 	for _, doc := range f {
 		d, err := ioutil.ReadAll(doc)

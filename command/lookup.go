@@ -1,24 +1,19 @@
 package command
 
 import (
-	"github.com/sampointer/digg/ranges"
-
+	"io"
 	"net"
-	"net/http"
 	"strings"
+
+	"github.com/sampointer/digg/ranges"
 )
 
 //Lookup returns Prefixes the ranges of which include the passed IP address
-func Lookup(q string) ([]ranges.Prefix, error) {
+func Lookup(q string, docs []io.Reader) ([]ranges.Prefix, error) {
 	var r []ranges.Prefix
 
-	urls := []string{
-		"https://www.gstatic.com/ipranges/goog.json",
-		"https://www.gstatic.com/ipranges/cloud.json",
-	}
-
-	for _, url := range urls {
-		l, err := lookup(q, url)
+	for _, doc := range docs {
+		l, err := lookup(q, doc)
 		if err != nil {
 			return r, err
 		}
@@ -30,16 +25,10 @@ func Lookup(q string) ([]ranges.Prefix, error) {
 	return r, nil
 }
 
-func lookup(q string, url string) ([]ranges.Prefix, error) {
-	var client http.Client
+func lookup(q string, doc io.Reader) ([]ranges.Prefix, error) {
 	var prefixes []ranges.Prefix
 
-	resp, err := client.Get(url)
-	if err != nil {
-		return nil, err
-	}
-
-	r, err := ranges.New(resp.Body)
+	r, err := ranges.New(doc)
 	if err != nil {
 		return nil, err
 	}
