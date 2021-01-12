@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/sampointer/digg/command"
-	"github.com/sampointer/digg/fetcher"
+	"github.com/sampointer/digg/manifest"
 )
 
 var cfgFile string
@@ -42,14 +42,8 @@ See https://support.google.com/a/answer/10026322?hl=en for more information.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		docs, err := fetcher.Fetch()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
 		for _, arg := range args {
-			res, err := command.Lookup(arg, docs)
+			res, err := command.Lookup(arg, manifest.GetManifest())
 			if err != nil {
 				fmt.Println(err)
 				return
